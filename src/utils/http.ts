@@ -1,12 +1,12 @@
 import axios from 'axios';
 
-export default class KAxios {
-    private static baseUrl = 'localhost:5143';
+export default class HttpClient {
+    private static baseUrl = 'http://localhost:3011/api';
 
-    static async get<T, U>(url: string, data: T): Promise<U | null> {
+    static async get<T, U>(url: string, data?: T): Promise<U | null> {
         try {
             const result = await axios.get<U>(url, {
-                baseURL: KAxios.baseUrl,
+                baseURL: HttpClient.baseUrl,
                 params: data,
             });
             if (result.status === 200) return result.data;
@@ -19,7 +19,7 @@ export default class KAxios {
     static async post<T, U>(url: string, data: T): Promise<U | null> {
         try {
             const result = await axios.post<U>(url, data, {
-                baseURL: KAxios.baseUrl,
+                baseURL: HttpClient.baseUrl,
             });
             if (result.status === 200) return result.data;
         } catch (error) {

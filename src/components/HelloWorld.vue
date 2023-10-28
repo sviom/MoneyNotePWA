@@ -1,7 +1,13 @@
 <template>
-    <input type="text" />
-    <input type="text" />
-    <button>로그인</button>
+    이름
+    <input type="text" v-model="user.name" />
+    이메일
+    <input type="email" v-model="user.email" />
+    비밀번호
+    <input type="password" v-model="user.password" />
+    비밀번호 확인
+    <input type="password" v-model="user.passwordConfirm" />
+    <button @click="signUp">로그인</button>
 
     <h1>{{ msg }}</h1>
 
@@ -27,10 +33,25 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
+import HttpClient from '../utils/http';
+import { UserModel } from '../models/User';
 
 defineProps<{ msg: string }>();
 
 const count = ref(0);
+
+const user = ref(new UserModel());
+
+const signUp = async () => {
+    if (user.value.password !== user.value.passwordConfirm) {
+        alert('test');
+        return;
+    }
+
+    const result = await HttpClient.post<UserModel, boolean>('/auth/auth', user.value);
+    console.log('result : ', result);
+    console.log('result : ', user.value);
+};
 </script>
 
 <style scoped>
