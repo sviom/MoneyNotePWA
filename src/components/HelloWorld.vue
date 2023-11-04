@@ -8,6 +8,11 @@
     비밀번호 확인
     <input type="password" v-model="user.passwordConfirm" />
     <button @click="signUp">로그인</button>
+    <br />
+
+    받은인증번호입력
+    <input type="text" v-model="authcode" />
+    <button @click="confirmAuthCode">인증확인</button>
 
     <h1>{{ msg }}</h1>
 
@@ -39,8 +44,8 @@ import { UserModel } from '../models/User';
 defineProps<{ msg: string }>();
 
 const count = ref(0);
-
 const user = ref(new UserModel());
+const authcode = ref('');
 
 const signUp = async () => {
     if (user.value.password !== user.value.passwordConfirm) {
@@ -51,6 +56,24 @@ const signUp = async () => {
     const result = await HttpClient.post<UserModel, boolean>('/auth/auth', user.value);
     console.log('result : ', result);
     console.log('result : ', user.value);
+};
+
+const confirmAuthCode = async () => {
+    if (user.value.password !== user.value.passwordConfirm) {
+        alert('test');
+        return;
+    }
+    if (!authcode.value) {
+        alert('test2');
+        return;
+    }
+
+    user.value.authCode = authcode.value;
+
+    const result = await HttpClient.post<UserModel, boolean>('/auth/user', user.value);
+    if (result) {
+        alert('가입성공');
+    }
 };
 </script>
 

@@ -3,6 +3,7 @@ class UserModel {
     public email: string = '';
     public password: string = '';
     public passwordConfirm: string = '';
+    public authCode: string = '';
 
     constructor() {}
 }
