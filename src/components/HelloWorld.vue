@@ -40,9 +40,10 @@
 import { ref } from 'vue';
 import HttpClient from '../utils/http';
 import { UserModel } from '../models/User';
+import { useRouter } from 'vue-router';
 
 defineProps<{ msg: string }>();
-
+const useRoute = useRouter();
 const count = ref(0);
 const user = ref(new UserModel());
 const authcode = ref('');
@@ -71,8 +72,10 @@ const confirmAuthCode = async () => {
     user.value.authCode = authcode.value;
 
     const result = await HttpClient.post<UserModel, boolean>('/auth/user', user.value);
+    console.log('회원가입절차 : ', result);
     if (result) {
         alert('가입성공');
+        useRoute.push('/');
     }
 };
 </script>
